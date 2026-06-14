@@ -107,21 +107,16 @@
       icon: '🔥',
       title: 'CORE ANOMALY',
       desc: '核心運算單元異常！緊急重啟序列啟動！',
-      keys: 'Ctrl+Alt+Delete',
-      sequence: ['control', 'alt', 'delete'],
+      keys: 'Delete × 3',
+      sequence: ['delete', 'delete', 'delete'],
       check(e, alertObj) {
-        const seq = THREATS[2].sequence;
-        if (['Control', 'Alt', 'Delete'].includes(e.key)) {
+        if (e.key === 'Delete') {
           if (!alertObj.pressedKeys) alertObj.pressedKeys = [];
-          const key = e.key.toLowerCase();
-          if (!alertObj.pressedKeys.includes(key)) {
-            alertObj.pressedKeys.push(key);
-          }
-          updateAlertPhase(alertObj, `序列: ${alertObj.pressedKeys.map(k => k.toUpperCase()).join(' → ')}`);
-          if (alertObj.pressedKeys.length === seq.length) {
-            const matched = alertObj.pressedKeys.every((k, i) => k === seq[i]);
+          alertObj.pressedKeys.push('delete');
+          updateAlertPhase(alertObj, `序列: DELETE (${alertObj.pressedKeys.length}/3)`);
+          if (alertObj.pressedKeys.length >= 3) {
             alertObj.pressedKeys = [];
-            return matched;
+            return true;
           }
         }
         return false;
@@ -477,7 +472,59 @@
     }
   });
 
-  document.addEventListener('contextmenu', (e) => e.preventDefault());
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const ctxMenu = $('#context-menu');
+    ctxMenu.classList.remove('hidden');
+    ctxMenu.style.left = e.pageX + 'px';
+    ctxMenu.style.top = e.pageY + 'px';
+  });
+
+  document.addEventListener('click', () => {
+    $('#context-menu').classList.add('hidden');
+  });
+
+  document.querySelectorAll('.ctx-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      const action = e.currentTarget.dataset.action;
+      $('#context-menu').classList.add('hidden');
+      if (action === 'refresh') {
+        windowsContainer.innerHTML = '';
+      } else if (action === 'about') {
+        alert('快捷鍵特工 — OS 密碼戰 v1.0.0\n作者: pengjun0429');
+      }
+    });
+  });
+
+  document.querySelectorAll('.desktop-icon').forEach(icon => {
+    icon.addEventListener('dblclick', (e) => {
+      const action = e.currentTarget.dataset.action;
+      if (action === 'notepad') {
+        const win = document.createElement('div');
+        win.className = 'alert-window virus';
+        win.style.cssText = 'left:200px;top:100px;width:350px;';
+        win.innerHTML = `
+          <div class="title-bar"><span>記事本</span><div class="title-icons"><span></span><span></span><span></span></div></div>
+          <div class="window-body" style="text-align:left;padding:12px;">
+            <p style="color:var(--neon-cyan);font-size:11px;">C:\\Users\\Player> 這是一段模擬文字</p>
+            <p style="color:rgba(200,214,229,0.5);font-size:11px;margin-top:8px;">[系統正常運作中...]</p>
+          </div>`;
+        windowsContainer.appendChild(win);
+      } else if (action === 'terminal') {
+        const win = document.createElement('div');
+        win.className = 'alert-window critical';
+        win.style.cssText = 'left:250px;top:120px;width:380px;';
+        win.innerHTML = `
+          <div class="title-bar"><span>終端機</span><div class="title-icons"><span></span><span></span><span></span></div></div>
+          <div class="window-body" style="text-align:left;padding:12px;">
+            <p style="color:var(--neon-green);font-size:11px;">C:\\OS_CORE> system --status</p>
+            <p style="color:var(--neon-red);font-size:11px;margin-top:4px;">[WARNING] 核心溫度過高</p>
+            <p style="color:var(--neon-yellow);font-size:11px;">[INFO] 正在掃描威脅...</p>
+          </div>`;
+        windowsContainer.appendChild(win);
+      }
+    });
+  });
 
   // ============ GOOGLE AUTH ============
   window.handleGoogleLogin = function(response) {

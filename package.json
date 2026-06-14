@@ -3,16 +3,24 @@
   "version": "1.0.0",
   "description": "快捷鍵特工 - OS 密碼戰",
   "main": "main.js",
+  "author": "pengjun0429",
   "scripts": {
     "start": "electron .",
-    "build:win": "electron-builder --win",
+    "build:win": "set CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder --win",
     "build:mac": "electron-builder --mac",
     "build:linux": "electron-builder --linux"
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "pengjun0429",
+    "repo": "shortcut-agent"
   },
   "build": {
     "appId": "com.shortcut-agent.game",
     "productName": "快捷鍵特工",
-    "directories": { "output": "dist" },
+    "directories": {
+      "output": "dist"
+    },
     "files": [
       "game.html",
       "css/**/*",
@@ -22,18 +30,27 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": null
+      "icon": null,
+      "sign": false
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true
+      "createDesktopShortcut": true,
+      "artifactName": "Shortcut-Agent-Setup-${version}.exe"
     },
-    "mac": { "target": "dmg" },
-    "linux": { "target": "AppImage" }
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   },
   "devDependencies": {
     "electron": "^33.0.0",
     "electron-builder": "^25.0.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
   }
 }

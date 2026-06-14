@@ -1,7 +1,14 @@
-const { app, BrowserWindow, globalShortcut } = require('electron');
+const { app, BrowserWindow, globalShortcut, dialog } = require('electron');
 const path = require('path');
+const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
+let updateDownloaded = false;
+
+// Disable auto-download, we'll handle it manually
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.allowDowngrade = false;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -27,7 +34,59 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
+  // Check for updates after window is ready
+  checkForUpdates();
 }
+
+function checkForUpdates() {
+  autoUpdater.checkForUpdates().catch((err) => {
+    console.log('Update check failed:', err.message);
+  });
+}
+
+// Update events
+autoUpdater.on('checking-for-update', () => {
+  console.log('Checking for updates...');
+});
+
+autoUpdater.on('update-available', (info) => {
+  console.log('Update available:', info.version);
+  if (mainWindow) {
+    mainWindow.webContents.send('update-available', info.version);
+  }
+});
+
+autoUpdater.on('update-not-available', () => {
+  console.log('No updates available.');
+});
+
+autoUpdater.on('download-progress', (progress) => {
+  console.log(`Download speed: ${progress.bytesPerSecond} - ${Math.round(progress.percent)}%`);
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  console.log('Update downloaded:', info.version);
+  updateDownloaded = true;
+
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: '有新版本可用',
+    message: `快捷鍵特工 ${info.version} 已下載完成`,
+    detail: '應用程式將在重啟後自動更新。是否立即重啟？',
+    buttons: ['立即重啟', '稍後'],
+    defaultId: 0,
+    cancelId: 1,
+  }).then(({ response }) => {
+    if (response === 0) {
+      autoUpdater.quitAndInstall();
+    }
+  });
+});
+
+autoUpdater.on('error', (err) => {
+  console.log('Auto-updater error:', err.message);
+});
 
 app.whenReady().then(() => {
   createWindow();
