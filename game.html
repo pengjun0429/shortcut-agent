@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>快捷鍵特工 - OS 密碼戰</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>" />
+  <meta name="google-signin-client_id" content="821770634840-s7oh8t26do45g5rtr9iou84vfj68onla.apps.googleusercontent.com" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <div id="scanline"></div>
+  <div id="crt-flicker"></div>
+
+  <div id="app">
+    <header id="top-bar">
+      <div class="logo">快捷鍵特工<span class="sub">OS 密碼戰</span></div>
+      <div id="user-info" class="hidden">
+        <img id="user-avatar" class="user-avatar" />
+        <span id="user-name"></span>
+        <button id="logout-btn" class="neon-btn tiny">LOGOUT</button>
+      </div>
+      <div id="score-display">SCORE: <span id="score">0</span></div>
+      <div id="health-display">CORE HP: <span id="health-bar">██████████</span></div>
+      <div id="timer-display">UPTIME: <span id="timer">00:00</span></div>
+      <div id="combo-counter">COMBO: <span id="combo-count">0</span>x</div>
+    </header>
+
+    <main id="desktop">
+      <div id="taskbar">
+        <span class="taskbar-item active">OS_CORE.exe</span>
+        <span class="taskbar-item blink">⚠ THREAT DETECTED</span>
+        <span id="clock"></span>
+      </div>
+
+      <div id="windows-container"></div>
+
+      <div id="combo-display" class="hidden">
+        <span id="combo-keys"></span>
+      </div>
+
+      <div id="wave-announce" class="hidden">
+        <span id="wave-text"></span>
+      </div>
+    </main>
+
+    <!-- ===== START SCREEN ===== -->
+    <div id="start-screen" class="overlay">
+      <div class="glass-panel start-panel">
+        <h1 class="neon-text">快捷鍵特工</h1>
+        <p class="tagline">OS 密碼戰 — 你的鍵盤就是武器</p>
+
+        <div id="auth-section">
+          <div id="google-btn-container">
+            <div id="g_id_onload"
+                 data-client_id="821770634840-s7oh8t26do45g5rtr9iou84vfj68onla.apps.googleusercontent.com"
+                 data-callback="handleGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
+            </div>
+          </div>
+          <div class="or-divider"><span>OR</span></div>
+          <input type="text" id="player-name" placeholder="輸入你的代號..." maxlength="12" autocomplete="off" />
+        </div>
+
+        <div class="instructions">
+          <p>系統即將超載！用快捷鍵解除所有危機！</p>
+          <div class="shortcut-guide">
+            <div class="guide-item">
+              <span class="badge danger">病毒入侵</span>
+              <kbd>Alt</kbd> + <kbd>F4</kbd>
+            </div>
+            <div class="guide-item">
+              <span class="badge warning">記憶體超載</span>
+              <kbd>Ctrl</kbd> + <kbd>X</kbd> → <kbd>Ctrl</kbd> + <kbd>V</kbd>
+            </div>
+            <div class="guide-item">
+              <span class="badge critical">核心異常</span>
+              <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Delete</kbd>
+            </div>
+            <div class="guide-item">
+              <span class="badge firewall">資料外洩</span>
+              <kbd>Ctrl</kbd> + <kbd>S</kbd> → <kbd>Ctrl</kbd> + <kbd>S</kbd>
+            </div>
+            <div class="guide-item">
+              <span class="badge corruption">系統損壞</span>
+              <kbd>Ctrl</kbd> + <kbd>Z</kbd>
+            </div>
+            <div class="guide-item">
+              <span class="badge process">僵尸程序</span>
+              <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Esc</kbd>
+            </div>
+          </div>
+        </div>
+
+        <button id="start-btn" class="neon-btn">INITIALIZE SYSTEM</button>
+        <p class="hint">⚠ 瀏覽器快捷鍵將被攔截，請勿離開遊戲</p>
+      </div>
+    </div>
+
+    <!-- ===== GAME OVER ===== -->
+    <div id="gameover-screen" class="overlay hidden">
+      <div class="glass-panel gameover-panel">
+        <h1 class="neon-text red">SYSTEM CRASH</h1>
+        <p class="crash-code">KERNEL PANIC — CORE OVERLOAD</p>
+        <div class="final-stats">
+          <div class="stat">
+            <span class="stat-label">最終分數</span>
+            <span class="stat-value" id="final-score">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">存活時間</span>
+            <span class="stat-value" id="final-time">00:00</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">解除危機</span>
+            <span class="stat-value" id="final-cleared">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">最大連擊</span>
+            <span class="stat-value" id="final-combo">0</span>
+          </div>
+        </div>
+        <div id="submit-status"></div>
+        <div class="gameover-buttons">
+          <button id="restart-btn" class="neon-btn">REBOOT SYSTEM</button>
+          <button id="lb-btn" class="neon-btn small">LEADERBOARD</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LEADERBOARD ===== -->
+    <div id="leaderboard-screen" class="overlay hidden">
+      <div class="glass-panel leaderboard-panel">
+        <h2 class="neon-text cyan">LEADERBOARD</h2>
+        <div id="leaderboard-list"></div>
+        <button id="lb-close-btn" class="neon-btn small">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>

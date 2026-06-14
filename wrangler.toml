@@ -1,0 +1,13 @@
+name = "shortcut-agent-api"
+main = "worker/index.js"
+compatibility_date = "2024-12-01"
+
+# D1 database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "shortcut-agent-db"
+database_id = "YOUR_D1_DATABASE_ID"  # replace after running: wrangler d1 create shortcut-agent-db
+
+# Environment variables (set via wrangler secret or here for dev)
+# [vars]
+# DISCORD_WEBHOOK_URL = ""

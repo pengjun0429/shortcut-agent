@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>快捷鍵特工 - OS 密碼戰</title>
+  <link rel="stylesheet" href="css/landing.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>" />
+</head>
+<body>
+  <div id="scanline"></div>
+
+  <div id="app">
+    <!-- ===== HERO ===== -->
+    <section id="hero">
+      <div class="hero-bg-grid"></div>
+      <div class="hero-content">
+        <div class="logo-glow">快捷鍵特工</div>
+        <h1 class="hero-title">OS 密碼戰</h1>
+        <p class="hero-sub">你的鍵盤就是唯一的武器</p>
+        <p class="hero-desc">
+          你是一個即將超載當機的作業系統核心。<br />
+          畫面不斷跳出紅色警訊視窗，而你<strong>不能使用滑鼠</strong>——<br />
+          只能靠快捷鍵解除所有危機，撐得越久分數越高。
+        </p>
+
+        <div id="download-section">
+          <p class="download-label">DOWNLOAD REQUIRED</p>
+          <p class="download-note">本遊戲必須下載後透過桌面應用程式運行</p>
+
+          <div class="download-cards">
+            <a href="https://github.com/pengjun0429/shortcut-agent/releases/latest/download/快捷鍵特工-Setup.exe"
+               class="download-card" id="dl-win">
+              <div class="dl-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M3 5.5L10.5 4.5V11.5H3V5.5Z"/>
+                  <path d="M10.5 4.5L21 3V11.5H10.5V4.5Z"/>
+                  <path d="M3 11.5H10.5V18.5L3 17.5V11.5Z"/>
+                  <path d="M10.5 11.5H21V20L10.5 18.5V11.5Z"/>
+                </svg>
+              </div>
+              <div class="dl-info">
+                <span class="dl-os">Windows</span>
+                <span class="dl-file">.exe 安裝程式</span>
+              </div>
+              <span class="dl-badge">LATEST</span>
+            </a>
+
+            <a href="https://github.com/pengjun0429/shortcut-agent/releases/latest/download/快捷鍵特工.dmg"
+               class="download-card" id="dl-mac">
+              <div class="dl-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.09997 21.99C7.78997 22.03 6.79997 20.68 5.95997 19.47C4.24997 16.99 2.92997 12.45 4.69997 9.39C5.56997 7.87 7.12997 6.91 8.81997 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5Z"/>
+                  <path d="M13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+                </svg>
+              </div>
+              <div class="dl-info">
+                <span class="dl-os">macOS</span>
+                <span class="dl-file">.dmg 映像檔</span>
+              </div>
+              <span class="dl-badge">LATEST</span>
+            </a>
+
+            <a href="https://github.com/pengjun0429/shortcut-agent/releases/latest/download/快捷鍵特工.AppImage"
+               class="download-card" id="dl-linux">
+              <div class="dl-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                  <circle cx="9" cy="10" r="1" fill="currentColor"/>
+                  <circle cx="15" cy="10" r="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="dl-info">
+                <span class="dl-os">Linux</span>
+                <span class="dl-file">.AppImage</span>
+              </div>
+              <span class="dl-badge">LATEST</span>
+            </a>
+          </div>
+
+          <div class="version-info">
+            v1.0.0 &middot; 最後更新: 2026-06-14
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section id="features">
+      <h2 class="section-title">GAME FEATURES</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⌨️</div>
+          <h3>純鍵盤操作</h3>
+          <p>完全不能使用滑鼠，所有操作必須透過快捷鍵完成。你的手指就是你的生存工具。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>6 種威脅類型</h3>
+          <p>病毒入侵、記憶體超載、核心異常、資料外洩、系統損壞、僵尸程序——每種都有獨特解法。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔥</div>
+          <h3>連擊系統</h3>
+          <p>快速連續解除危機可觸發 Combo 加分，連續成功次數越多獎勵越高。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏆</div>
+          <h3>全球排行榜</h3>
+          <p>透過 Google 帳號登入，挑戰全球玩家。打破前三名紀錄時自動推送 Discord 通知。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SHORTCUTS ===== -->
+    <section id="shortcuts">
+      <h2 class="section-title">SHORTCUT REFERENCE</h2>
+      <div class="shortcut-table">
+        <div class="st-row st-header">
+          <span class="st-threat">威脅</span>
+          <span class="st-keys">快捷鍵</span>
+          <span class="st-diff">難度</span>
+        </div>
+        <div class="st-row">
+          <span class="st-threat danger">🦠 病毒入侵</span>
+          <span class="st-keys"><kbd>Alt</kbd>+<kbd>F4</kbd></span>
+          <span class="st-diff easy">★☆☆</span>
+        </div>
+        <div class="st-row">
+          <span class="st-threat warning">💾 記憶體超載</span>
+          <span class="st-keys"><kbd>Ctrl</kbd>+<kbd>X</kbd> → <kbd>Ctrl</kbd>+<kbd>V</kbd></span>
+          <span class="st-diff medium">★★☆</span>
+        </div>
+        <div class="st-row">
+          <span class="st-threat critical">🔥 核心異常</span>
+          <span class="st-keys"><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Delete</kbd></span>
+          <span class="st-diff hard">★★★</span>
+        </div>
+        <div class="st-row">
+          <span class="st-threat firewall">🛡️ 資料外洩</span>
+          <span class="st-keys"><kbd>Ctrl</kbd>+<kbd>S</kbd> → <kbd>Ctrl</kbd>+<kbd>S</kbd></span>
+          <span class="st-diff medium">★★☆</span>
+        </div>
+        <div class="st-row">
+          <span class="st-threat corruption">💉 系統損壞</span>
+          <span class="st-keys"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span>
+          <span class="st-diff easy">★☆☆</span>
+        </div>
+        <div class="st-row">
+          <span class="st-threat process">👻 僵尸程序</span>
+          <span class="st-keys"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Esc</kbd></span>
+          <span class="st-diff hard">★★★</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="footer">
+      <p>快捷鍵特工 — OS 密碼戰 &copy; 2026</p>
+      <p class="footer-sub">Built with HTML + CSS + JS + Cloudflare Workers + D1</p>
+    </footer>
+  </div>
+
+  <script>
+    // Auto-detect OS and highlight download
+    const ua = navigator.userAgent.toLowerCase();
+    if (ua.includes('win')) {
+      document.getElementById('dl-win').classList.add('recommended');
+    } else if (ua.includes('mac')) {
+      document.getElementById('dl-mac').classList.add('recommended');
+    } else if (ua.includes('linux')) {
+      document.getElementById('dl-linux').classList.add('recommended');
+    }
+  </script>
+</body>
+</html>
