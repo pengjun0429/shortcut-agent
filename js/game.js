@@ -2,7 +2,7 @@
   'use strict';
 
   // ============ CONFIG ============
-  const API_BASE = '';
+  const API_BASE = 'https://shortcut-agent-api.pengjun0429.workers.dev';
   const DESPAWN_BASE = 6000;
   const DESPAWN_MIN = 2200;
   const SPAWN_INTERVAL_BASE = 2200;
