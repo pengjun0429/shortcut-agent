@@ -344,6 +344,166 @@
     if (phaseEl) phaseEl.textContent = text;
   }
 
+  // ============ WINDOW DRAGGING ============
+  function makeDraggable(el) {
+    const titleBar = el.querySelector('.title-bar');
+    if (!titleBar) return;
+    let isDragging = false, startX, startY, origLeft, origTop;
+    titleBar.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.win-btns')) return;
+      isDragging = true;
+      startX = e.clientX; startY = e.clientY;
+      origLeft = el.offsetLeft; origTop = el.offsetTop;
+      el.style.zIndex = ++state.windowIdCounter + 10;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      el.style.left = (origLeft + e.clientX - startX) + 'px';
+      el.style.top = (origTop + e.clientY - startY) + 'px';
+    });
+    document.addEventListener('mouseup', () => { isDragging = false; });
+  }
+
+  // ============ MOUSE ACTION BUTTONS ============
+  function addActionButtons(alertObj) {
+    const body = alertObj.el.querySelector('.window-body');
+    if (!body) return;
+    const threat = alertObj.threat;
+    const actionsContainer = document.createElement('div');
+    actionsContainer.className = 'alert-actions';
+
+    if (threat.type === 'virus') {
+      const btn = document.createElement('button');
+      btn.className = 'alert-action-btn danger';
+      btn.textContent = 'FORCE CLOSE (Alt+F4)';
+      btn.addEventListener('click', () => {
+        if (state.running && alertObj.el.parentNode) {
+          state.score += threat.score;
+          state.cleared++;
+          addCombo();
+          updateScore();
+          showPopup(alertObj.el, '+' + threat.score);
+          despawnAlert(alertObj.id, false);
+        }
+      });
+      actionsContainer.appendChild(btn);
+    } else if (threat.type === 'memory') {
+      const btn1 = document.createElement('button');
+      btn1.className = 'alert-action-btn';
+      btn1.textContent = 'STEP 1: CUT (Ctrl+X)';
+      btn1.addEventListener('click', () => {
+        if (alertObj.phase === 0) {
+          alertObj.phase = 1;
+          updateAlertHint(alertObj, 'Ctrl+V');
+          updateAlertPhase(alertObj, '剪下完成 → 按 Ctrl+V 丟棄');
+          btn1.textContent = 'DONE';
+          btn1.disabled = true;
+          btn1.style.opacity = '0.4';
+        }
+      });
+      const btn2 = document.createElement('button');
+      btn2.className = 'alert-action-btn danger';
+      btn2.textContent = 'STEP 2: PASTE (Ctrl+V)';
+      btn2.addEventListener('click', () => {
+        if (alertObj.phase === 1 && state.running && alertObj.el.parentNode) {
+          state.score += threat.score;
+          state.cleared++;
+          addCombo();
+          updateScore();
+          showPopup(alertObj.el, '+' + threat.score);
+          despawnAlert(alertObj.id, false);
+        }
+      });
+      actionsContainer.appendChild(btn1);
+      actionsContainer.appendChild(btn2);
+    } else if (threat.type === 'critical') {
+      for (let i = 0; i < 3; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'alert-action-btn danger';
+        btn.textContent = `DELETE ${i + 1}/3`;
+        btn.addEventListener('click', () => {
+          if (!alertObj.pressedKeys) alertObj.pressedKeys = [];
+          alertObj.pressedKeys.push('delete');
+          btn.textContent = '✓ ' + (i + 1) + '/3';
+          btn.style.opacity = '0.3';
+          btn.disabled = true;
+          updateAlertPhase(alertObj, `序列: DELETE (${alertObj.pressedKeys.length}/3)`);
+          if (alertObj.pressedKeys.length >= 3) {
+            alertObj.pressedKeys = [];
+            if (state.running && alertObj.el.parentNode) {
+              state.score += threat.score;
+              state.cleared++;
+              addCombo();
+              updateScore();
+              showPopup(alertObj.el, '+' + threat.score);
+              despawnAlert(alertObj.id, false);
+            }
+          }
+        });
+        actionsContainer.appendChild(btn);
+      }
+    } else if (threat.type === 'firewall') {
+      const btn1 = document.createElement('button');
+      btn1.className = 'alert-action-btn';
+      btn1.textContent = 'STEP 1: SAVE (Ctrl+S)';
+      btn1.addEventListener('click', () => {
+        alertObj.phase = (alertObj.phase || 0) + 1;
+        updateAlertHint(alertObj, 'Ctrl+S (again)');
+        updateAlertPhase(alertObj, '第一次儲存完成 → 再按 Ctrl+S 確認');
+        btn1.textContent = 'SAVED';
+        btn1.disabled = true;
+        btn1.style.opacity = '0.4';
+      });
+      const btn2 = document.createElement('button');
+      btn2.className = 'alert-action-btn danger';
+      btn2.textContent = 'STEP 2: CONFIRM (Ctrl+S)';
+      btn2.addEventListener('click', () => {
+        if (alertObj.phase >= 1 && state.running && alertObj.el.parentNode) {
+          state.score += threat.score;
+          state.cleared++;
+          addCombo();
+          updateScore();
+          showPopup(alertObj.el, '+' + threat.score);
+          despawnAlert(alertObj.id, false);
+        }
+      });
+      actionsContainer.appendChild(btn1);
+      actionsContainer.appendChild(btn2);
+    } else if (threat.type === 'corruption') {
+      const btn = document.createElement('button');
+      btn.className = 'alert-action-btn';
+      btn.textContent = 'UNDO (Ctrl+Z)';
+      btn.addEventListener('click', () => {
+        if (state.running && alertObj.el.parentNode) {
+          state.score += threat.score;
+          state.cleared++;
+          addCombo();
+          updateScore();
+          showPopup(alertObj.el, '+' + threat.score);
+          despawnAlert(alertObj.id, false);
+        }
+      });
+      actionsContainer.appendChild(btn);
+    } else if (threat.type === 'process') {
+      const btn = document.createElement('button');
+      btn.className = 'alert-action-btn danger';
+      btn.textContent = 'FORCE KILL (Ctrl+Shift+Esc)';
+      btn.addEventListener('click', () => {
+        if (state.running && alertObj.el.parentNode) {
+          state.score += threat.score;
+          state.cleared++;
+          addCombo();
+          updateScore();
+          showPopup(alertObj.el, '+' + threat.score);
+          despawnAlert(alertObj.id, false);
+        }
+      });
+      actionsContainer.appendChild(btn);
+    }
+    body.appendChild(actionsContainer);
+  }
+
   // ============ WAVE SYSTEM ============
   function showWave(waveNum) {
     waveText.textContent = `WAVE ${waveNum}`;
@@ -441,9 +601,28 @@
   document.addEventListener('keydown', (e) => {
     if (!state.running) return;
 
-    if (e.ctrlKey || e.altKey) {
-      const blocked = ['f4','x','v','w','r','n','p','s','u','z','a','d'];
-      if (blocked.includes(e.key.toLowerCase()) || e.key === 'Delete') {
+    // Block browser shortcuts
+    if (e.key === 'F5' || e.key === 'F11' || e.key === 'F12') {
+      e.preventDefault(); return;
+    }
+    if (e.ctrlKey && e.shiftKey) {
+      const blockCS = ['i','j','c','Delete','Escape'];
+      if (blockCS.includes(e.key) || blockCS.includes(e.key.toUpperCase())) {
+        e.preventDefault();
+      }
+    }
+    if (e.ctrlKey && e.altKey) {
+      e.preventDefault();
+    }
+    if (e.ctrlKey) {
+      const blocked = ['f4','x','v','w','r','n','p','s','u','z','a','d','l','h','j','o','i','c','b','k'];
+      if (blocked.includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
+    }
+    if (e.altKey) {
+      const blockedAlt = ['f4','f5','tab','space','arrowup','arrowdown','arrowleft','arrowright'];
+      if (blockedAlt.includes(e.key.toLowerCase())) {
         e.preventDefault();
       }
     }

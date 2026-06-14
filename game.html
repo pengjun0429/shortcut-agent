@@ -52,9 +52,31 @@
       </div>
 
       <div id="taskbar">
+        <button id="start-btn">▶ OS</button>
         <span class="taskbar-item active">OS_CORE.exe</span>
-        <span class="taskbar-item blink">⚠ THREAT DETECTED</span>
-        <span id="clock"></span>
+        <span class="taskbar-item blink">⚠ THREAT</span>
+        <div id="system-tray">
+          <span class="tray-icon" title="網路">📶</span>
+          <span class="tray-icon" title="音量">🔊</span>
+          <span id="clock"></span>
+        </div>
+      </div>
+
+      <div id="start-menu">
+        <div class="start-menu-header">
+          <div class="start-menu-avatar">👤</div>
+          <span class="start-menu-user">OS Core User</span>
+        </div>
+        <div class="start-menu-apps">
+          <div class="start-app-item" data-app="notepad"><span class="start-app-icon">📝</span><span class="start-app-name">記事本</span></div>
+          <div class="start-app-item" data-app="terminal"><span class="start-app-icon">💻</span><span class="start-app-name">終端機</span></div>
+          <div class="start-app-item" data-app="browser"><span class="start-app-icon">🌐</span><span class="start-app-name">瀏覽器</span></div>
+          <div class="start-app-item" data-app="settings"><span class="start-app-icon">⚙️</span><span class="start-app-name">系統設定</span></div>
+          <div class="start-app-item" data-app="about"><span class="start-app-icon">ℹ️</span><span class="start-app-name">關於本機</span></div>
+        </div>
+        <div class="start-menu-footer">
+          <button id="start-menu-close" class="neon-btn small">SHUTDOWN</button>
+        </div>
       </div>
 
       <div id="context-menu" class="hidden">
