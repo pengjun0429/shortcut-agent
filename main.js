@@ -21,6 +21,7 @@ function createWindow() {
     autoHideMenuBar: true,
     frame: true,
     fullscreenable: true,
+    icon: path.join(__dirname, 'build', 'icons', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
